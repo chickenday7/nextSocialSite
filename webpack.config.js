@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-
 const isDev = process.env.NODE_ENV === "development"
 const isProd = !isDev
 const filename = (ext) => isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`
@@ -27,6 +26,13 @@ module.exports = {
     rules: [
     { test: /\.txt$/, use: 'raw-loader' },
     {
+        test: /\.css$/i,
+        use: [
+             "style-loader", 
+              "css-loader"
+        ],
+      },
+    {
         test: /\.ts?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
@@ -37,7 +43,18 @@ module.exports = {
         use: {
           loader: "babel-loader",
         }
-    }
+    },
+    {
+        test: /\.(woff2)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+                name: `./font/${filename('[ext]')}`
+            }
+          },
+        ],
+      },
     ]
   },
   resolve: {
